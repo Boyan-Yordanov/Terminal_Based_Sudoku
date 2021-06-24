@@ -1,4 +1,4 @@
-#include  "Sudoku.hpp"
+#include  "sudoku.hpp"
 
 int main()
 {
@@ -7,5 +7,8 @@ int main()
 /// Function that runs the mini game  ///
 /////////////////////////////////////////
    SudokuMinigame a;
-   a.kindaMainFunctionButNotQuite(); 
+   while (!a.startSudoku())
+   {
+      a.startSudoku();
+   }
 }
