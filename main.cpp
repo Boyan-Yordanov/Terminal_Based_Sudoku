@@ -13,4 +13,4 @@ int main()
       isItPlayed = true;
       a.startSudoku(isItPlayed);
    }
-}
+};

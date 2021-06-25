@@ -3,9 +3,7 @@ using namespace std;
 
     /// Creating a two dimensional array containing 90 entries
     /// There was a bug with [8][8] array so I added the 9th
-    /// Column (which cannot be manipulated by the player) to
-    /// Fix the nasty bug I discovered
-
+    /// Column (which cannot be manipulated by the player)
     int field [8][9];
 
 class SudokuMinigame
@@ -43,7 +41,6 @@ class SudokuMinigame
             field [8][0]=1; field [8][1]=0; field [8][2]=2; field [8][3]=0; field [8][4]=0; field [8][5]=9; field [8][6]=0; field [8][7]=8; field [8][8]=0;
         }
 
-
         /// This is a simple test case, fills all the
         /// Squares except one, so I can showcase the ending.
         void testCase()
@@ -60,7 +57,6 @@ class SudokuMinigame
             field [7][0]=4; field [7][1]=8; field [7][2]=9; field [7][3]=1; field [7][4]=6; field [7][5]=7; field [7][6]=5; field [7][7]=2; field [7][8]=3; 
             field [8][0]=1; field [8][1]=7; field [8][2]=2; field [8][3]=5; field [8][4]=3; field [8][5]=9; field [8][6]=4; field [8][7]=8; field [8][8]=6; 
         }
-
 
         /// This is the layout of the game,
         /// The "\033[36m" is baically a way to colour the different
@@ -95,7 +91,6 @@ class SudokuMinigame
             std::cout <<"\033[35m"<<"---"<< "\033[36m"<< "+---+---+---+"<<"\033[33m"<<"+---+---+---+"<<"\033[36m"<<"+---+---+---+" <<"\033[0m"<< endl;
         }
 
-
         /// The next function will print the rules of
         /// Sudoku and it is also coloured with
         /// The uppermentioned method.
@@ -103,7 +98,6 @@ class SudokuMinigame
         {
                 cout <<"\033[35m"<< " The objective is to fill the grid so that each row, each column, and each of the nine 3x3 boxes \n contains the digits from 1 to 9. Remember thare canrow be repeating digits in any of the rows, columns and 3 by 3 boxes. \n Good Luck!" <<"\033[0m"<< endl;
         }
-
 
         /// This function checks if the user input for column is correct
         /// If not, returns a message for the player.
@@ -131,7 +125,6 @@ class SudokuMinigame
             }
         }
 
-
         /// This function checks if the user input for row is correct
         /// If not, returns a message for the player.
         int inputRowChecker(string row)
@@ -157,7 +150,6 @@ class SudokuMinigame
                 return -1;
             }
         }
-
 
         /// This function checks if the user input for NUMBER IN GRID is correct
         /// If not, returns a message for the player.
@@ -185,7 +177,6 @@ class SudokuMinigame
                 return -1;
             }    
         }
-
 
         /// This function checks the finished grid
         /// It is called only when the grid is filled 
@@ -315,7 +306,6 @@ class SudokuMinigame
                     field[stoi(input_column)][stoi(input_row)] = stoi(toBeTestedPlayerInputNumber);
                     sudokuLayout();
 
-
                     /// Here we need to check if the whole board is filled with
                     /// Numbers(isBoardFull function), if it is, then the
                     /// gameFinishCheck is run, where the validity of the answers
@@ -326,12 +316,10 @@ class SudokuMinigame
                     if (boardFull == true)
                     {
                         won = gameFinishCheck(won);
-                        std::cout << won << std::endl;
                         return won;
                     }
                     else 
                     {
-                        std::cout << won << std::endl;
                         return won;
                     }
                 }
@@ -344,6 +332,6 @@ class SudokuMinigame
                     std::cout <<"\033[1m\033[31m"<< "Wrong cell! This cell has number in it already. Please try again:" <<"\033[0m"<< endl;
                 }    
             }
-        return won;
+            return won;
         }
 };
