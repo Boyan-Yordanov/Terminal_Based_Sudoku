@@ -62,7 +62,7 @@ class SudokuMinigame
         /// The "\033[36m" is baically a way to colour the different
         /// Sections of the grid, for better visibility.
         /// I am puting one array in each empty square.
-        /// If You are not using codio put "\033[2J\033[1;1H" infront.
+        /// If You are not using codio put "\033[2J\033[1;1H" infront. 
         void sudokuLayout() 
         {
             std::cout <<"\033c"<<"\033[35m"<< "C\\R| 0 | 1 | 2 || 3 | 4 | 5 || 6 | 7 | 8 |"<< endl;
@@ -234,7 +234,6 @@ class SudokuMinigame
 
         bool startSudoku(bool isItPlayed)
         {
-        
             if (!isItPlayed)
             {
                 startingNumbers();
@@ -248,12 +247,13 @@ class SudokuMinigame
             {
                 isItPlayed = false;
                 fill(field[0], field[0] + 8 * 9, 0);
-                emptyStartingNumbers();
+                startingNumbers();
                 sudokuLayout();
                 std::cout<<endl;
                 std::cout<<endl;
-                std::cout << "You would have to try again, you made a mistake while trying to fill the board!" << std::endl;
+                std::cout <<"\033[1m\033[31m"<< "YOU FILLED THE BOARD, BUT IT SEEMS LIKE YOU MADE A MISTAKE, TRY AGAIN <3" <<"\033[0m"<< std::endl;
             }
+            
             string toBeTestedPlayerInputNumber;       /// Number that player wants to insert into the grid.
             string input_column;                      /// ID if the columnl that the answer needs to be inserted.
             string input_row;                         /// ID of the row that the answer needs to be inserted.
@@ -280,6 +280,7 @@ class SudokuMinigame
                 std::cout << "\033[1m" <<"Row:" << endl;
                 std::getline(cin,input_row);
                 int row = inputRowChecker(input_row);
+
                 while (row == -1)
                 {
                     std::cout << "\033[1m" <<"Please enter a valid row:" << endl;
@@ -316,10 +317,6 @@ class SudokuMinigame
                     if (boardFull == true)
                     {
                         won = gameFinishCheck(won);
-                        return won;
-                    }
-                    else 
-                    {
                         return won;
                     }
                 }
