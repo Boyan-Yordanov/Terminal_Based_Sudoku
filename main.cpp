@@ -2,15 +2,24 @@
 
 int main()
 {
-   /////////////////////////////////////////
-   /// Initialising a object to call the ///
-   /// Function that runs the mini game  ///
-   /////////////////////////////////////////
+
+   /// Initialising a object to call the
+   /// Function that runs the mini game 
+
    bool isItPlayed = false;
-   SudokuMinigame a;
-   while (!a.startSudoku(isItPlayed))
-   {
-      isItPlayed = true;
-      a.startSudoku(isItPlayed);
+   SudokuMinigame instance;
+   bool won = false;
+
+   while (42)
+   { 
+      won = instance.startSudoku(isItPlayed);
+      if (won)
+      {
+         break;
+      }
+      else
+      {
+         isItPlayed = true;
+      }
    }
 };

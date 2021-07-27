@@ -1,16 +1,19 @@
 #include <iostream>
+#include <stdio.h>
+#include <string.h>
 using namespace std;
 
-    /// Creating a two dimensional array containing 90 entries
-    /// There was a bug with [8][8] array so I added the 9th
-    /// Column (which cannot be manipulated by the player)
-    int field [8][9];
+    /// Creating a two dimensional array containing 72 entries
+    /// There was a bug with [8][8] array so the 9th column was
+    /// added (which cannot be manipulated by the player)
+    int field [8][9] = {0};
 
 class SudokuMinigame
 {
     private:
 
-        /// Adding the starting numbers to the grid.
+        /// Adding the starting numbers to the grid,
+        /// which is represented by the variable FIELD.
         void startingNumbers()
         {
             field [0][1]=6; field [0][3]=3; field [0][6]=8; field [0][8]=4; 
@@ -25,7 +28,8 @@ class SudokuMinigame
             field [8][0]=1; field [8][2]=2; field [8][5]=9; field [8][7]=8;
         }
         
-        /// Yet another test case. It represents the full board, with the empty spaces
+        /// Test function
+        /// Representing the full board, with the empty spaces.
         void emptyStartingNumbers()
         {
             field [0][0]=0; field [0][1]=6; field [0][2]=1; field [0][3]=0; field [0][4]=0; field [0][5]=0; field [0][6]=8; field [0][7]=0; field [0][8]=4;
@@ -41,8 +45,9 @@ class SudokuMinigame
             field [8][0]=1; field [8][1]=0; field [8][2]=2; field [8][3]=0; field [8][4]=0; field [8][5]=9; field [8][6]=0; field [8][7]=8; field [8][8]=0;
         }
 
-        /// This is a simple test case, fills all the
-        /// Squares except one, so I can showcase the ending.
+        /// Test function
+        /// Filling all squares except one.
+        /// Used to skip the solving when testing.
         void testCase()
         {
             field [0][0]=2; field [0][1]=6; field [0][2]=1; field [0][3]=3; field [0][4]=7; field [0][5]=5; field [0][6]=8; field [0][7]=9; field [0][8]=4;
@@ -57,15 +62,16 @@ class SudokuMinigame
             field [7][0]=4; field [7][1]=8; field [7][2]=9; field [7][3]=1; field [7][4]=6; field [7][5]=7; field [7][6]=5; field [7][7]=2; field [7][8]=3; 
             field [8][0]=1; field [8][1]=7; field [8][2]=2; field [8][3]=5; field [8][4]=3; field [8][5]=9; field [8][6]=4; field [8][7]=8; field [8][8]=6; 
         }
-
+    
         /// This is the layout of the game,
         /// The "\033[36m" is baically a way to colour the different
         /// Sections of the grid, for better visibility.
-        /// I am puting one array in each empty square.
-        /// If You are not using codio put "\033[2J\033[1;1H" infront. 
-        void sudokuLayout() 
+        /// Placing one element of FIELD in each section.
+        /// If "\033[2J\033[1;1H" does not erase the previous board state,
+        /// use "\033c" instead."\033c"<<
+        void sudokuLayout()
         {
-            std::cout <<"\033c"<<"\033[35m"<< "C\\R| 0 | 1 | 2 || 3 | 4 | 5 || 6 | 7 | 8 |"<< endl;
+            std::cout <<"\033[35m"<< "C\\R| 0 | 1 | 2 || 3 | 4 | 5 || 6 | 7 | 8 |"<< endl;
             std::cout <<"\033[35m"<<"---"<< "\033[36m"<< "+---+---+---+"<<"\033[33m"<<"+---+---+---+"<<"\033[36m"<<"+---+---+---+"<< endl;
             std::cout <<"\033[35m"<<" 0 "<< "\033[36m"<< "| "<< field[0][0] <<" | "<< field[0][1] <<" | "<< field[0][2] <<" |"<<"\033[33m"<<"| "<< field[0][3] <<" | "<< field[0][4] <<" | "<< field[0][5] <<" |"<<"\033[36m"<<"| "<< field[0][6] <<" | "<< field[0][7] <<" | "<< field[0][8] <<" |" << endl;
             std::cout <<"\033[35m"<<"---"<< "\033[36m"<< "+---+---+---+"<<"\033[33m"<<"+---+---+---+"<<"\033[36m"<<"+---+---+---+" << endl;
@@ -91,15 +97,13 @@ class SudokuMinigame
             std::cout <<"\033[35m"<<"---"<< "\033[36m"<< "+---+---+---+"<<"\033[33m"<<"+---+---+---+"<<"\033[36m"<<"+---+---+---+" <<"\033[0m"<< endl;
         }
 
-        /// The next function will print the rules of
-        /// Sudoku and it is also coloured with
-        /// The uppermentioned method.
+        /// Function to print the rules of sudoku
         void rulesOfSudoku()
         {
                 cout <<"\033[35m"<< " The objective is to fill the grid so that each row, each column, and each of the nine 3x3 boxes \n contains the digits from 1 to 9. Remember thare canrow be repeating digits in any of the rows, columns and 3 by 3 boxes. \n Good Luck!" <<"\033[0m"<< endl;
         }
 
-        /// This function checks if the user input for column is correct
+        /// Function that checks if the user input for COLUMN is correct
         /// If not, returns a message for the player.
         int inputColumnChecker(string column)
         {
@@ -125,7 +129,7 @@ class SudokuMinigame
             }
         }
 
-        /// This function checks if the user input for row is correct
+        /// Function that checks if the user input for ROW is correct
         /// If not, returns a message for the player.
         int inputRowChecker(string row)
         {
@@ -151,7 +155,7 @@ class SudokuMinigame
             }
         }
 
-        /// This function checks if the user input for NUMBER IN GRID is correct
+        /// Function that checks if the user input for NUMBER IN GRID is correct
         /// If not, returns a message for the player.
         int inputPlayerChecker(string playerInput)
         {
@@ -178,40 +182,38 @@ class SudokuMinigame
             }    
         }
 
-        /// This function checks the finished grid
-        /// It is called only when the grid is filled 
+        /// Function that checks the finished grid
+        /// It is called only when the FIELD is filled 
         /// With numbers different than 0's.
         bool gameFinishCheck(bool won)
         {
-            int sum=0;
-                for (int r=0; r<9; r++)
+            int sum = 0;
+            for (int r=0; r<9; r++)
+            {
+                for (int c=0; c<9; c++)
                 {
-                    for (int c=0; c<9; c++)
-                    {
-                        /// This loop collects all the numbers in the grid and adds them
-                        sum += field[c][r];
-                    }
+                    /// This loop collects all the numbers in the grid and adds them
+                    sum += field[c][r];
                 }
-                /// Checking if everything is correct, the sum of the cells
-                /// Should be exactly 405, which is 9*(1+2+3+4+5+6+7+8+9)
+            }
+            /// Checking if everything is correct, the sum of the cells
+            /// Should be exactly 405, which is 9*(1+2+3+4+5+6+7+8+9)
             if (sum != 405) 
             {
-                std::cout <<"\033[1m\033[31m"<< "YOU FILLED THE BOARD, BUT IT SEEMS LIKE YOU MADE A MISTAKE, TRY AGAIN <3" <<"\033[0m"<< endl;
+                std::cout <<"\033[1m\033[31m"<< "YOU FILLED THE BOARD, BUT IT SEEMS LIKE YOU MADE A MISTAKE, TRY AGAIN" <<"\033[0m"<< endl;
                 return false;
-                /// At this point the game should probably restart or something, but
-                /// I'm going to give an easy sudoku hoping for a solve without any mistakes
             }
             else
             {
                 std::cout << "Congratulations! You finished the Sudoku!" <<"\033[0m"<< std::endl;
-                return true;     
+                return true;
                 /// Returns the won variable (which was false at the beginning),
                 /// Which breaks the loop and then game ends
             }
         }
 
-        /// This function checks if the whole board is filled with numbers
-        /// If not, the value of boardFull is returned and set to false.
+        /// Function that checks if the whole board is filled with numbers.
+        /// If not, the value of boardFull is set to false and returned.
         bool isBoardFull(bool boardFull)
         {
             for (int i=0; i<8; ++i)
@@ -225,38 +227,51 @@ class SudokuMinigame
             return boardFull = true;
         }
 
-        /// This is the main fucntion for this .h file, the name speaks for itself
-        /// A basic while loop is used to check whether the game has to keep
-        /// Calling all the other functions in this .h file. When the game is
-        /// Complete it returns the boolean won to the main function of the text
-        /// Adventure Game.
     public:
 
+        /// Function that starts the game
+        /// A while loop is used to keep the game running
+        /// until the function "GameFinishCheck" returns true
         bool startSudoku(bool isItPlayed)
         {
-            if (!isItPlayed)
+            if (isItPlayed)
             {
-                startingNumbers();
+                std::cout << "do we even go here?" << std::endl;
+                isItPlayed = false;
+                memset(field, 0, 8*9*(sizeof(int)));
+                field [8][9] = {0};
+                for (int i=0; i<8; ++i)
+                {
+                        for (int j=0; j<8; ++j)
+                        {
+                            field[i][j] = 0;           
+                        }
+                }
                 testCase();
                 sudokuLayout();
-                std::cout<<endl;    
-                std::cout<<endl;   
-                rulesOfSudoku();  
+                std::cout<<endl;        
+                std::cout<<endl;
+                std::cout << "do we go here?" << std::endl;
+                std::cout<<endl;
+                std::cout<<endl;
+                std::cout<<endl;
+                std::cout<<endl;
+                std::cout << field << std::endl;    
+                std::cout <<"\033[1m\033[31m"<< "YOU FILLED THE BOARD, BUT IT SEEMS LIKE YOU MADE A MISTAKE, TRY AGAIN" <<"\033[0m"<< std::endl;
+                std::cout << field << std::endl;    
             }
             else
             {
-                isItPlayed = false;
-                fill(field[0], field[0] + 8 * 9, 0);
-                startingNumbers();
+                testCase();
                 sudokuLayout();
                 std::cout<<endl;
                 std::cout<<endl;
-                std::cout <<"\033[1m\033[31m"<< "YOU FILLED THE BOARD, BUT IT SEEMS LIKE YOU MADE A MISTAKE, TRY AGAIN <3" <<"\033[0m"<< std::endl;
+                rulesOfSudoku();
             }
             
             string toBeTestedPlayerInputNumber;       /// Number that player wants to insert into the grid.
-            string input_column;                      /// ID if the columnl that the answer needs to be inserted.
-            string input_row;                         /// ID of the row that the answer needs to be inserted.
+            string input_column;                      /// ID if the COLUMN that the answer needs to be inserted.
+            string input_row;                         /// ID of the ROW that the answer needs to be inserted.
             bool won = false;
             bool boardFull = false;
 
@@ -269,7 +284,8 @@ class SudokuMinigame
                 std::cout << "\033[1m" <<"Column:" << endl;
                 std::getline(cin,input_column);
                 int column = inputColumnChecker(input_column);
-                while (column == -1) 
+
+                while (column == -1)
                 {
                     std::cout << "\033[1m" <<"Please enter a valid column:" << endl;
                     std::getline(cin,input_column);
@@ -292,6 +308,7 @@ class SudokuMinigame
                 std::cout << "\033[1m" <<"Number:"<<endl;
                 std::getline(cin, toBeTestedPlayerInputNumber);
                 int playerInput = inputPlayerChecker(toBeTestedPlayerInputNumber);
+
                 while (playerInput == -1)
                 {
                     std::cout << "\033[1m" <<"please enter a valid number:"<<endl;
@@ -317,7 +334,6 @@ class SudokuMinigame
                     if (boardFull == true)
                     {
                         won = gameFinishCheck(won);
-                        return won;
                     }
                 }
                 else
@@ -327,7 +343,7 @@ class SudokuMinigame
                     /// That this action is illegal
                     sudokuLayout();
                     std::cout <<"\033[1m\033[31m"<< "Wrong cell! This cell has number in it already. Please try again:" <<"\033[0m"<< endl;
-                }    
+                }
             }
             return won;
         }
