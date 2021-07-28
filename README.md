@@ -5,5 +5,5 @@ The task was to create a Terminal game with no graphics. We decided to make a te
 
 
 
-As of today(20.06.2021) the sudoku game is nearly finished. Debugging is in progress. Current bug case is as follows:
-Filling the game with wrong numbers leads to a complete restart(as designed), but when completing the game correctly the game does not finish, it restarts again. After some tests I found out it was a logical error, but till today I have not found where it happen. The game does print the Congratulations message, but after it, the code for some reason prints the grid again, and if that time the grid is filled correctly (for the second time), the game closes as intended. I think it has something to do with the while loop inside the .hpp file. ANY SUGGESTIONS ARE WELCOME!
+As of today(28.06.2021) the sudoku game is nearly finished. Debugging is in progress. Current bug case is as follows:
+The while loop in the header file does not break, which leads to a state in which the player cannot enter anything, because everything is filled.
