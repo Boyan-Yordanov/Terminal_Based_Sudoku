@@ -71,7 +71,7 @@ class SudokuMinigame
         /// use "\033c" instead."\033c"<<
         void sudokuLayout()
         {
-            std::cout <<"\033[35m"<< "C\\R| 0 | 1 | 2 || 3 | 4 | 5 || 6 | 7 | 8 |"<< endl;
+            std::cout <<"\033c"<<"\033[35m"<< "C\\R| 0 | 1 | 2 || 3 | 4 | 5 || 6 | 7 | 8 |"<< endl;
             std::cout <<"\033[35m"<<"---"<< "\033[36m"<< "+---+---+---+"<<"\033[33m"<<"+---+---+---+"<<"\033[36m"<<"+---+---+---+"<< endl;
             std::cout <<"\033[35m"<<" 0 "<< "\033[36m"<< "| "<< field[0][0] <<" | "<< field[0][1] <<" | "<< field[0][2] <<" |"<<"\033[33m"<<"| "<< field[0][3] <<" | "<< field[0][4] <<" | "<< field[0][5] <<" |"<<"\033[36m"<<"| "<< field[0][6] <<" | "<< field[0][7] <<" | "<< field[0][8] <<" |" << endl;
             std::cout <<"\033[35m"<<"---"<< "\033[36m"<< "+---+---+---+"<<"\033[33m"<<"+---+---+---+"<<"\033[36m"<<"+---+---+---+" << endl;
@@ -200,7 +200,7 @@ class SudokuMinigame
             /// Should be exactly 405, which is 9*(1+2+3+4+5+6+7+8+9)
             if (sum != 405) 
             {
-                std::cout <<"\033[1m\033[31m"<< "YOU FILLED THE BOARD, BUT IT SEEMS LIKE YOU MADE A MISTAKE, TRY AGAIN/// gamefinishcheck" <<"\033[0m"<< endl;
+                std::cout <<"\033[1m\033[31m"<< "YOU FILLED THE BOARD, BUT IT SEEMS LIKE YOU MADE A MISTAKE, TRY AGAIN" <<"\033[0m"<< endl;
                 won = false;
                 return won;
             }
@@ -235,36 +235,20 @@ class SudokuMinigame
         /// Function that checks if the game was played before.
         /// Called at the start of the while loop.
         /// If the game was played before, this function clears out
-        /// the field and sets a new one.
+        /// the field (from the previous game) and sets up a new sudoku.
         void ifPlayed(bool isItPlayed)
         {
             if (isItPlayed)
             {
-                std::cout << "do we even go here?" << std::endl;//////////////////////////////////////////////////////////////////////////////////////////////////////////
-                isItPlayed = false;
-                
+                isItPlayed = false;                
                 memset(field, 0, 8*9*(sizeof(int)));
-                //////////////////////
-                // field [8][9] = {0};
-                //////////////////////
-                // for (int i=0; i<8; ++i)
-                // {
-                //         for (int j=0; j<8; ++j)
-                //         {
-                //             field[i][j] = 0;           
-                //         }
-                // }
                 testCase();
                 sudokuLayout();
                 emptyPrint(2);
-                std::cout << "do we go here?" << std::endl;///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                std::cout << field << std::endl;//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                 std::cout <<"\033[1m\033[31m"<< "YOU FILLED THE BOARD, BUT IT SEEMS LIKE YOU MADE A MISTAKE, TRY AGAIN/// this is the start func" <<"\033[0m"<< std::endl;
-                std::cout << field << std::endl; /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             }
             else
             {
-                std::cout << "else statement in start func" << std::endl;/////////////////////////////////////////////////////////////////////////////////////////////////
                 testCase();
                 sudokuLayout();
                 emptyPrint(2);
@@ -349,20 +333,16 @@ class SudokuMinigame
         /// until the function "GameFinishCheck" returns true
         bool startSudoku(bool isItPlayed)
         {
-            ifPlayed(isItPlayed);
-            
-            string toBeTestedPlayerInputNumber;      /// Number that player wants to insert into the grid.
-            string inputColumn;                      /// ID if the COLUMN that the answer needs to be inserted.
-            string inputRow;                         /// ID of the ROW that the answer needs to be inserted.
+            ifPlayed(isItPlayed);                   /// Checking wether the game was played or not
+            string toBeTestedPlayerInputNumber;     /// Number that player wants to insert into the grid.
+            string inputColumn;                     /// ID if the COLUMN that the answer needs to be inserted.
+            string inputRow;                        /// ID of the ROW that the answer needs to be inserted.
             bool won = false;
             bool boardFull = false;
-            int counter = 1;
 
-            while (won == false)
+            while (boardFull == false)
             {
-                std::cout << "start func While loop iteration:"<< counter++ << std::endl;/////////////////////////////////////////////////////////////////////////////////
                 emptyPrint(2);
-
                 inputColumn = askingForColumn(inputColumn);
                 inputRow = askingForRow(inputRow);
                 toBeTestedPlayerInputNumber = playerInput(toBeTestedPlayerInputNumber);
@@ -374,9 +354,7 @@ class SudokuMinigame
                 {
                     field[stoi(inputColumn)][stoi(inputRow)] = stoi(toBeTestedPlayerInputNumber);
                     sudokuLayout();
-
                     boardFull = isBoardFull(boardFull);
-                    std::cout << "boardfull: " << boardFull << std::endl;//////////////////////////////////////////////////////////////////
                     if (boardFull == true)
                     {
                         won = gameFinishCheck(won);
@@ -384,9 +362,6 @@ class SudokuMinigame
                 }
                 else
                 {
-                    /// If the selected box in which the player wants to put their
-                    /// Number is taken, this else statement lets the player know
-                    /// That this action is illegal
                     sudokuLayout();
                     std::cout <<"\033[1m\033[31m"<< "Wrong cell! This cell has number in it already. Please try again:" <<"\033[0m"<< endl;
                 }
