@@ -200,31 +200,146 @@ class SudokuMinigame
             /// Should be exactly 405, which is 9*(1+2+3+4+5+6+7+8+9)
             if (sum != 405) 
             {
-                std::cout <<"\033[1m\033[31m"<< "YOU FILLED THE BOARD, BUT IT SEEMS LIKE YOU MADE A MISTAKE, TRY AGAIN" <<"\033[0m"<< endl;
-                return false;
+                std::cout <<"\033[1m\033[31m"<< "YOU FILLED THE BOARD, BUT IT SEEMS LIKE YOU MADE A MISTAKE, TRY AGAIN/// gamefinishcheck" <<"\033[0m"<< endl;
+                won = false;
+                return won;
             }
             else
             {
                 std::cout << "Congratulations! You finished the Sudoku!" <<"\033[0m"<< std::endl;
-                return true;
+                won = true;
+                return won;
                 /// Returns the won variable (which was false at the beginning),
                 /// Which breaks the loop and then game ends
             }
         }
 
+        /// Initializing a variable containing the board size.
+        int boardSize = 8;
+
         /// Function that checks if the whole board is filled with numbers.
         /// If not, the value of boardFull is set to false and returned.
         bool isBoardFull(bool boardFull)
         {
-            for (int i=0; i<8; ++i)
+            for (int i=0; i<boardSize; ++i)
             {                                        /// This part of the code took me the longest to debug but,
-                for (int j=0; j<8; ++j)              /// With a little bit of help from David Croft, who suggested
+                for (int j=0; j<boardSize; ++j)      /// With a little bit of help from David Croft, who suggested
                 {                                    /// To flip my logic arround (searching for numbers in grid
                     if (field[i][j] == 0)            /// not for the 0's) I managed to get it working
                         return boardFull = false;
                 }
             }
             return boardFull = true;
+        }
+
+        /// Function that checks if the game was played before.
+        /// Called at the start of the while loop.
+        /// If the game was played before, this function clears out
+        /// the field and sets a new one.
+        void ifPlayed(bool isItPlayed)
+        {
+            if (isItPlayed)
+            {
+                std::cout << "do we even go here?" << std::endl;//////////////////////////////////////////////////////////////////////////////////////////////////////////
+                isItPlayed = false;
+                
+                memset(field, 0, 8*9*(sizeof(int)));
+                //////////////////////
+                // field [8][9] = {0};
+                //////////////////////
+                // for (int i=0; i<8; ++i)
+                // {
+                //         for (int j=0; j<8; ++j)
+                //         {
+                //             field[i][j] = 0;           
+                //         }
+                // }
+                testCase();
+                sudokuLayout();
+                emptyPrint(2);
+                std::cout << "do we go here?" << std::endl;///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                std::cout << field << std::endl;//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                std::cout <<"\033[1m\033[31m"<< "YOU FILLED THE BOARD, BUT IT SEEMS LIKE YOU MADE A MISTAKE, TRY AGAIN/// this is the start func" <<"\033[0m"<< std::endl;
+                std::cout << field << std::endl; /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            }
+            else
+            {
+                std::cout << "else statement in start func" << std::endl;/////////////////////////////////////////////////////////////////////////////////////////////////
+                testCase();
+                sudokuLayout();
+                emptyPrint(2);
+                rulesOfSudoku();
+            }
+        }
+
+        /// Function that takes number as argument
+        /// and prints out that many empty lines
+        void emptyPrint(int number)
+        {
+            for (int i = 0; i < number; i++)
+            {
+                std::cout << std::endl;
+            }
+        }
+
+        /// Function that asks for column input.
+        /// Checks if the input is valid.
+        /// Returns the valid input only.
+        string askingForColumn(string inputColumn)
+        {
+            /// Asking for a column, checking if the input is acceptable.
+            std::cout << "\033[1m" <<"Column:" << endl;
+            std::getline(cin,inputColumn);
+            int column = inputColumnChecker(inputColumn);
+
+            while (column == -1)
+            {
+                std::cout << "\033[1m" <<"Please enter a valid column:" << endl;
+                std::getline(cin,inputColumn);
+                column = inputColumnChecker(inputColumn);
+            }
+
+            return inputColumn;
+        }
+
+        /// Function that asks for row input.
+        /// Checks if the input is valid.
+        /// Returns the valid input only.
+        string askingForRow(string inputRow)
+        {
+            /// Asking for a row, checking if the input is acceptable.
+            std::cout << "\033[1m" <<"Row:" << endl;
+            std::getline(cin,inputRow);
+            int row = inputRowChecker(inputRow);
+
+            while (row == -1)
+            {
+                std::cout << "\033[1m" <<"Please enter a valid row:" << endl;
+                std::getline(cin,inputRow);
+                row = inputRowChecker(inputRow);
+            }
+
+            return inputRow;
+        }   
+
+        /// Function that asks the player for a number.
+        /// Checks if the number is valid.
+        /// Returns the valid number only.
+        string playerInput(string toBeTestedPlayerInputNumber)
+        {
+            /// Asking for a number, checking if the input is acceptable.
+            std::cout << "\033[1m" <<"Number:"<<endl;
+            std::getline(cin, toBeTestedPlayerInputNumber);
+            int playerInput = inputPlayerChecker(toBeTestedPlayerInputNumber);
+
+            while (playerInput == -1)
+            {
+                std::cout << "\033[1m" <<"please enter a valid number:"<<endl;
+                std::getline(cin, toBeTestedPlayerInputNumber);
+                playerInput = inputPlayerChecker(toBeTestedPlayerInputNumber);  
+            }
+
+            return toBeTestedPlayerInputNumber;
         }
 
     public:
@@ -234,103 +349,34 @@ class SudokuMinigame
         /// until the function "GameFinishCheck" returns true
         bool startSudoku(bool isItPlayed)
         {
-            if (isItPlayed)
-            {
-                std::cout << "do we even go here?" << std::endl;
-                isItPlayed = false;
-                memset(field, 0, 8*9*(sizeof(int)));
-                field [8][9] = {0};
-                for (int i=0; i<8; ++i)
-                {
-                        for (int j=0; j<8; ++j)
-                        {
-                            field[i][j] = 0;           
-                        }
-                }
-                testCase();
-                sudokuLayout();
-                std::cout<<endl;        
-                std::cout<<endl;
-                std::cout << "do we go here?" << std::endl;
-                std::cout<<endl;
-                std::cout<<endl;
-                std::cout<<endl;
-                std::cout<<endl;
-                std::cout << field << std::endl;    
-                std::cout <<"\033[1m\033[31m"<< "YOU FILLED THE BOARD, BUT IT SEEMS LIKE YOU MADE A MISTAKE, TRY AGAIN" <<"\033[0m"<< std::endl;
-                std::cout << field << std::endl;    
-            }
-            else
-            {
-                testCase();
-                sudokuLayout();
-                std::cout<<endl;
-                std::cout<<endl;
-                rulesOfSudoku();
-            }
+            ifPlayed(isItPlayed);
             
-            string toBeTestedPlayerInputNumber;       /// Number that player wants to insert into the grid.
-            string input_column;                      /// ID if the COLUMN that the answer needs to be inserted.
-            string input_row;                         /// ID of the ROW that the answer needs to be inserted.
+            string toBeTestedPlayerInputNumber;      /// Number that player wants to insert into the grid.
+            string inputColumn;                      /// ID if the COLUMN that the answer needs to be inserted.
+            string inputRow;                         /// ID of the ROW that the answer needs to be inserted.
             bool won = false;
             bool boardFull = false;
+            int counter = 1;
 
             while (won == false)
             {
-                std::cout<<endl;
-                std::cout<<endl;
+                std::cout << "start func While loop iteration:"<< counter++ << std::endl;/////////////////////////////////////////////////////////////////////////////////
+                emptyPrint(2);
 
-                /// Asking for a column, checking if the input is acceptable.
-                std::cout << "\033[1m" <<"Column:" << endl;
-                std::getline(cin,input_column);
-                int column = inputColumnChecker(input_column);
-
-                while (column == -1)
-                {
-                    std::cout << "\033[1m" <<"Please enter a valid column:" << endl;
-                    std::getline(cin,input_column);
-                    column = inputColumnChecker(input_column);
-                }
-
-                /// Asking for a row, checking if the input is acceptable.
-                std::cout << "\033[1m" <<"Row:" << endl;
-                std::getline(cin,input_row);
-                int row = inputRowChecker(input_row);
-
-                while (row == -1)
-                {
-                    std::cout << "\033[1m" <<"Please enter a valid row:" << endl;
-                    std::getline(cin,input_row);
-                    row = inputRowChecker(input_row);
-                }
-
-                /// Asking for a number, checking if the input is acceptable.
-                std::cout << "\033[1m" <<"Number:"<<endl;
-                std::getline(cin, toBeTestedPlayerInputNumber);
-                int playerInput = inputPlayerChecker(toBeTestedPlayerInputNumber);
-
-                while (playerInput == -1)
-                {
-                    std::cout << "\033[1m" <<"please enter a valid number:"<<endl;
-                    std::getline(cin, toBeTestedPlayerInputNumber);
-                    playerInput = inputPlayerChecker(toBeTestedPlayerInputNumber);  
-                }
+                inputColumn = askingForColumn(inputColumn);
+                inputRow = askingForRow(inputRow);
+                toBeTestedPlayerInputNumber = playerInput(toBeTestedPlayerInputNumber);
 
                 /// Making a simple check if the place given by the player is
                 /// Taken by another integer, if it is empty (A.K.A.= 0) it
                 /// Will place it in the given box
-                if (field[stoi(input_column)][stoi(input_row)] == 0)
+                if (field[stoi(inputColumn)][stoi(inputRow)] == 0)
                 {
-                    field[stoi(input_column)][stoi(input_row)] = stoi(toBeTestedPlayerInputNumber);
+                    field[stoi(inputColumn)][stoi(inputRow)] = stoi(toBeTestedPlayerInputNumber);
                     sudokuLayout();
 
-                    /// Here we need to check if the whole board is filled with
-                    /// Numbers(isBoardFull function), if it is, then the
-                    /// gameFinishCheck is run, where the validity of the answers
-                    /// Given by the player is taken. If the board is filled 
-                    /// Correctly, then the boolean won is set to true,
-                    /// Which breaks the While Loop
                     boardFull = isBoardFull(boardFull);
+                    std::cout << "boardfull: " << boardFull << std::endl;//////////////////////////////////////////////////////////////////
                     if (boardFull == true)
                     {
                         won = gameFinishCheck(won);
